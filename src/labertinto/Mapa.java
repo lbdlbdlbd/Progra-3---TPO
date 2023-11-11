@@ -6,8 +6,8 @@ public class Mapa {
     private static final char ENTRADA = 'E';
     private static final char PARED = '#';
     private static final char SALIDA = 'S';
-    private static final char[] PORTAL = {'a','b','c'};
-    private static final String abcd = "abcdefghijklmnopqrstuwvxyz";
+    private static final char[] PORTAL = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','u','v','w','x','y','z'};
+    private static final String abcd = "abcdefghijklmnopqrsuvwxyz";
     private static final int[][] POSIBLES_MOVIMIENTOS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     private final char[][] mapa;
 
@@ -46,10 +46,11 @@ public class Mapa {
         int pasosHastaAhora = nodo.getPasos();
         for (int[] movimiento : POSIBLES_MOVIMIENTOS) {
             Celda siguienteCelda = new Celda(x + movimiento[0], y + movimiento[1]);
+            /*
             if (this.esPortal(x,y)){
                 System.out.println(this.esPortal(x,y));
                 siguienteCelda = buscarPosicionPortal(nodo.getCelda());
-            }
+            }*/
             if (!this.estaFueraDeMapa(siguienteCelda) && !this.esPared(siguienteCelda)) {
                 posiblesMovimientos.add(new Nodo(siguienteCelda, pasosHastaAhora + 1));
             }
@@ -86,6 +87,7 @@ public class Mapa {
         }
         throw new EntradaFaltanteException("El mapa no tiene entrada");
     }
+    /*
     private boolean esPortal(int x, int y) {
         int res = Arrays.binarySearch(PORTAL, this.mapa[x][y]);
 
@@ -101,8 +103,7 @@ public class Mapa {
                 }
             }
         }
-        throw new EntradaFaltanteException("El mapa no tiene entrada");
-    }
+    }*/
 
     public void imprimir() {
         for (char[] row : this.mapa) {
