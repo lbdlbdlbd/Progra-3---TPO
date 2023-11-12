@@ -52,7 +52,13 @@ public class Mapa {
                 siguienteCelda = buscarPosicionPortal(nodo.getCelda());
             }*/
             if (!this.estaFueraDeMapa(siguienteCelda) && !this.esPared(siguienteCelda)) {
-                posiblesMovimientos.add(new Nodo(siguienteCelda, pasosHastaAhora + 1));
+                if (this.esPortal(siguienteCelda)){
+                    siguienteCelda = buscarPosicionPortal(siguienteCelda, this.mapa[siguienteCelda.getX()][siguienteCelda.getY()]);
+                    posiblesMovimientos.add(new Nodo(siguienteCelda, pasosHastaAhora + 2));
+                }
+                else {
+                    posiblesMovimientos.add(new Nodo(siguienteCelda, pasosHastaAhora + 1));
+                }
             }
         }
         return posiblesMovimientos;
@@ -87,23 +93,22 @@ public class Mapa {
         }
         throw new EntradaFaltanteException("El mapa no tiene entrada");
     }
-    /*
-    private boolean esPortal(int x, int y) {
-        int res = Arrays.binarySearch(PORTAL, this.mapa[x][y]);
 
+    private boolean esPortal(Celda celda) {
+        int res = Arrays.binarySearch(PORTAL, this.mapa[celda.getX()][celda.getY()]);
         boolean test = res >= 0 ? true : false;
-
         return test;
     }
-    private Celda buscarPosicionPortal(Celda celda) {
+    private Celda buscarPosicionPortal(Celda celda, char letra) {
         for (int i = 0; i < mapa.length; i++) {
             for (int j = 0; j < mapa[i].length; j++) {
-                if (mapa[i][j] == ENTRADA && mapa[i][j] != this.mapa[celda.getX()][celda.getY()]) {
+                if (mapa[i][j] == letra && (i != celda.getX() || j != celda.getY())){
                     return new Celda(i, j);
                 }
             }
         }
-    }*/
+        throw new EntradaFaltanteException("No se encontro el portal");
+    }
 
     public void imprimir() {
         for (char[] row : this.mapa) {

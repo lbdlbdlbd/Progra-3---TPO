@@ -22,14 +22,17 @@ public class BacktrackingTest {
         assertEquals(2, mapa3.escapar());
         Mapa mapa4 = new Mapa(new char[][]{{'E', '#', '.', '.'}, {'.', '.', '.', '.'}, {'#', '.', '#', '.'}, {'.', '#', '#', 'S'}});
         assertEquals(6, mapa4.escapar());
-        Mapa mapa5 = new Mapa(new char[][]{{'S', '.', 'b', '#', 'b'}, {'#', '#', '#', '#', 'a'}, {'.', '.', 'E', '#', '#'}, {'c', '#', '#', '.', 'c'}, {'#', 'a', '.', '.', '.'}});
-        assertEquals(-1, mapa5.escapar());
+        Mapa mapa5 = new Mapa(new char[][]{
+                {'S', '.', 'b', '#', 'b'},
+                {'#', '#', '#', '#', 'a'},
+                {'.', '.', 'E', '#', '#'},
+                {'c', '#', '#', '.', 'c'},
+                {'#', 'a', '.', '.', '.'}});
+        assertEquals(13, mapa5.escapar());
         Mapa mapa6 = new Mapa(new char[][]{
-                {'S', '.', 'b','#','b'},
-                {'#', '.', '#','#','a'},
-                {'#', '.', 'E','#','#'},
-                {'c', '#', '#','.','c'},
-                {'#', 'a', '.','.','.'} });
+                {'S', '.', 'c'},
+                {'#', '#', '#'},
+                {'#', 'c', 'E'},});
         assertEquals(4, mapa6.escapar());
     }
 }
