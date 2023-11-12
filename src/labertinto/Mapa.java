@@ -15,7 +15,7 @@ public class Mapa {
         this.mapa = mapa;
     }
 
-    private int obtenerCantidadDePasos(Celda celda) {
+    private int obtenerCantidadDePasos(Celda celda) {                   // a=  b=  k=
         Queue<Nodo> cola = new LinkedList<>();
         Set<Nodo> visitados = new HashSet<>();
         List<Nodo> vecinos;
@@ -27,7 +27,7 @@ public class Mapa {
             if (this.esSalida(primero.getCelda())) {
                 return primero.getPasos();
             }
-            vecinos = this.posiblesMovimientosDesdeCoordenada(primero);
+            vecinos = this.posiblesMovimientosDesdeCoordenada(primero);                      //O(n^2)
             while (!vecinos.isEmpty()) {
                 Nodo vecino = vecinos.remove(0);
                 if (!visitados.contains(vecino)) {
@@ -39,21 +39,16 @@ public class Mapa {
         return -1;
     }
 
-    private List<Nodo> posiblesMovimientosDesdeCoordenada(Nodo nodo) {
+    private List<Nodo> posiblesMovimientosDesdeCoordenada(Nodo nodo) {                              //O(n^2)
         List<Nodo> posiblesMovimientos = new ArrayList<>();
         int x = nodo.getPosicionX();
         int y = nodo.getPosicionY();
         int pasosHastaAhora = nodo.getPasos();
-        for (int[] movimiento : POSIBLES_MOVIMIENTOS) {
+        for (int[] movimiento : POSIBLES_MOVIMIENTOS) {                                             //O(4)
             Celda siguienteCelda = new Celda(x + movimiento[0], y + movimiento[1]);
-            /*
-            if (this.esPortal(x,y)){
-                System.out.println(this.esPortal(x,y));
-                siguienteCelda = buscarPosicionPortal(nodo.getCelda());
-            }*/
             if (!this.estaFueraDeMapa(siguienteCelda) && !this.esPared(siguienteCelda)) {
-                if (this.esPortal(siguienteCelda)){
-                    siguienteCelda = buscarPosicionPortal(siguienteCelda, this.mapa[siguienteCelda.getX()][siguienteCelda.getY()]);
+                if (this.esPortal(siguienteCelda)){                                                 //O(log2n)
+                    siguienteCelda = buscarPosicionPortal(siguienteCelda, this.mapa[siguienteCelda.getX()][siguienteCelda.getY()]); //O(n^2)
                     posiblesMovimientos.add(new Nodo(siguienteCelda, pasosHastaAhora + 2));
                 }
                 else {
@@ -64,17 +59,17 @@ public class Mapa {
         return posiblesMovimientos;
     }
 
-    private boolean esPared(Celda celda) {
+    private boolean esPared(Celda celda) {                                    //O(c)
         return this.mapa[celda.getX()][celda.getY()] == PARED;
     }
 
-    private boolean estaFueraDeMapa(Celda celda) {
+    private boolean estaFueraDeMapa(Celda celda) {                            //O(c)
         int x = celda.getX();
         int y = celda.getY();
         return x < 0 || y < 0 || x >= this.mapa.length || y >= this.mapa[x].length;
     }
 
-    private boolean esSalida(Celda celda) {
+    private boolean esSalida(Celda celda) {                                       //O(c)
         return this.mapa[celda.getX()][celda.getY()] == SALIDA;
     }
 
@@ -83,7 +78,7 @@ public class Mapa {
         return obtenerCantidadDePasos(entrada);
     }
 
-    private Celda buscarPosicionEntrada() {
+    private Celda buscarPosicionEntrada() {                                       //O(n^2)
         for (int i = 0; i < mapa.length; i++) {
             for (int j = 0; j < mapa[i].length; j++) {
                 if (mapa[i][j] == ENTRADA) {
@@ -94,12 +89,12 @@ public class Mapa {
         throw new EntradaFaltanteException("El mapa no tiene entrada");
     }
 
-    private boolean esPortal(Celda celda) {
+    private boolean esPortal(Celda celda) {                                                         //O(log2n)
         int res = Arrays.binarySearch(PORTAL, this.mapa[celda.getX()][celda.getY()]);
         boolean test = res >= 0 ? true : false;
         return test;
     }
-    private Celda buscarPosicionPortal(Celda celda, char letra) {
+    private Celda buscarPosicionPortal(Celda celda, char letra) {                                   //O(n^2)
         for (int i = 0; i < mapa.length; i++) {
             for (int j = 0; j < mapa[i].length; j++) {
                 if (mapa[i][j] == letra && (i != celda.getX() || j != celda.getY())){
@@ -108,14 +103,5 @@ public class Mapa {
             }
         }
         throw new EntradaFaltanteException("No se encontro el portal");
-    }
-
-    public void imprimir() {
-        for (char[] row : this.mapa) {
-            for (char column : row) {
-                System.out.printf("%s ", column);
-            }
-            System.out.println();
-        }
     }
 }
